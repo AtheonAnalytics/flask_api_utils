@@ -10,13 +10,15 @@ SORT_DESCENDING = 'desc'
 
 
 def sort_query(query, view):
+    ordering_fields = getattr(view, 'ordering_fields', {})
+
     params = request.args.get(ORDERING_PARAM)
     if params:
         fields = [param.strip() for param in params.split(',')]
         ordering = remove_invalid_fields(query, fields, view.ordering_fields)
         if ordering:
             # Rebuild specs
-            spec = build_spec(view.ordering_fields, ordering)
+            spec = build_spec(ordering_fields, ordering)
             query = apply_sort(query, spec)
     elif get_default_ordering_spec(view):
         spec = get_default_ordering_spec(view)
