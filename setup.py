@@ -13,7 +13,7 @@ requirements = [
 ]
 
 setuptools.setup(
-    name='api-utils',
+    name='flask-api-utils',
     version='0.1',
     author="Tuan Nguyen",
     author_email="tuan.nguyen@groovetechnology.com",
