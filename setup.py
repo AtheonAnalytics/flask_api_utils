@@ -8,7 +8,8 @@ requirements = [
     'flask-restplus',
     'sqlalchemy-filters',
     'werkzeug',
-    'sqlalchemy'
+    'sqlalchemy',
+    'flask-jwt-extended[asymmetric_crypto]'
 ]
 
 setuptools.setup(
