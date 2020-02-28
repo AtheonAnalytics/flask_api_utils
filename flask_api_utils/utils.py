@@ -1,6 +1,5 @@
 import flask
 from flask_restplus._http import HTTPStatus
-from sqlalchemy import or_, and_
 from werkzeug.exceptions import HTTPException
 
 
@@ -24,3 +23,22 @@ def abort(status_code=HTTPStatus.INTERNAL_SERVER_ERROR, message=None, **kwargs):
         if kwargs:
             e.data = kwargs
         raise
+
+
+def has_perm(organisations, host_name, perm, retailer=None):
+    if not organisations or not (host_name in organisations and 'roles' in organisations[host_name]):
+        return False
+
+    if not retailer:
+        retailer = 'global'
+
+    return perm in organisations[host_name]['roles'].get(retailer, [])
+
+
+def has_staff_perm(organisations, perm):
+    for host_name, organisation in organisations.items():
+        if 'roles' in organisation:
+            if perm in organisation['roles'].get('global', []):
+                return True
+
+    return False
