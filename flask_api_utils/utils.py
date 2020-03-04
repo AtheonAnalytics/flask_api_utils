@@ -42,3 +42,13 @@ def has_staff_perm(organisations, perm):
                 return True
 
     return False
+
+
+def is_staff(organisations):
+    for host_name, organisation in organisations.items():
+        if 'roles' in organisation:
+            for role in organisation['roles'].get('global', []):
+                if role.startswith('staff'):
+                    return True
+
+    return False
