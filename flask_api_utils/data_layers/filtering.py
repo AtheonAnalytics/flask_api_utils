@@ -2,12 +2,13 @@ from flask import request
 from sqlalchemy_filters import apply_filters
 
 
-def filter_query(query, view):
+def filter_query(query, view, data=None):
     spec = getattr(view, 'filter_fields', None)
     if spec:
         filter_spec = []
+        data = data if data else request.args
         for key, spec in spec.items():
-            value = request.args.get(key)
+            value = data.get(key)
             if value:
                 spec['value'] = value
                 filter_spec.append(spec)
