@@ -18,11 +18,22 @@ class SkutrakRoleHierarchyVoter:
 
             result = DENIED
             if host_name:
-                # all retailers
-                if host_name in extracted_roles:
+                if host_name == '*':
+                    if retailer == '*':
+                        for organisation_config in extracted_roles.values():
+                            for r, roles in organisation_config.items():
+                                if attribute in roles:
+                                    return GRANTED
+                    else:
+                        for organisation_config in extracted_roles.values():
+                            for r, roles in organisation_config.items():
+                                if r == retailer and attribute in roles:
+                                    return GRANTED
+
+                elif host_name in extracted_roles:
                     # Check in all retailers
                     if retailer == '*':
-                        for retailer, roles in extracted_roles[host_name]:
+                        for roles in extracted_roles[host_name].values():
                             if attribute in roles:
                                 return GRANTED
                     # Single retailer
@@ -32,7 +43,7 @@ class SkutrakRoleHierarchyVoter:
             else:
                 # Staff roles, no need for organisation check, use global retailer only
                 retailer = 'global'
-                for organisation, organisation_config in extracted_roles.items():
+                for organisation_config in extracted_roles.values():
                     if retailer in organisation_config and attribute in organisation_config.get(retailer, {}):
                         return GRANTED
 
