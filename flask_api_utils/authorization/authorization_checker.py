@@ -3,8 +3,21 @@ from flask_api_utils.authorization.role_hierachy import RoleHierarchy
 from flask_api_utils.authorization.voter import GRANTED, DENIED
 from flask_api_utils.authorization.voter.skutrak_role_hierachy_voter import SkutrakRoleHierarchyVoter
 
+"""
+Authorization mechanism inspired from Symfony
+"""
+
 
 class AccessDecisionManager:
+    """
+    Security voters are the key feature of this authorization mechanism.
+    They provide the most granular way of checking permissions (e.g. "can this specific user edit the given item?")
+    In order to grant or deny permission, all the voters' decisions are aggregated by the Access Decision Manager.
+    Then, depending on your application config, permission is granted if all voters said yes (unanimous),
+    or if the majority said yes (consensus),
+    or if at least one voter said yes (affirmative).
+    """
+
     def __init__(self,
                  strategy='affirmative',
                  allow_if_equal_granted_denied_decisions=False,
@@ -88,6 +101,28 @@ class AccessDecisionManager:
 
 
 class AuthorizationChecker:
+    """
+    Already inited with SkutrakHierarchyRoleVoter
+    authorization_checker.is_granted(user, 'can_edit', subject_to_check)
+    Usage example:
+    For skutrak permission checking
+
+    To check permission on a specific hostname and retailer
+    authorization_checker.is_granted(user, 'content_viewer', 'host_name.retailer')
+
+    To check permission on a specific hostname regardless of retailers
+    authorization_checker.is_granted(user, 'staff_content_viewer', 'host_name.*')
+    or authorization_checker.is_granted(user, 'content_viewer', 'host_name')
+
+    To check permission on a specific retailer regardless of hostname
+    authorization_checker.is_granted(user, 'content_viewer', '*.retailer')
+
+    To check permission on a all hostname and retailer
+    authorization_checker.is_granted(user, 'content_viewer', '*.*')
+
+    To check staff permission
+    authorization_checker.is_granted(user, 'staff_user_manager')
+    """
     access_decision_manager = None
 
     def __init__(self, app=None):
