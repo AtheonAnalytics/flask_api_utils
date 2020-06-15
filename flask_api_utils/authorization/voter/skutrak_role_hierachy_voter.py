@@ -7,10 +7,13 @@ class SkutrakRoleHierarchyVoter:
         self.host_name_key = host_name_key
 
     def vote(self, user, subject, attributes):
+        result = ABSTAIN
+
+        if self.host_name_key not in user:
+            return result
+
         extracted_roles = self.extract_roles(user)
         host_name, retailer = self.get_host_name_retailer_parts(subject)
-
-        result = ABSTAIN
 
         for attribute in attributes:
             if not isinstance(attribute, str):
