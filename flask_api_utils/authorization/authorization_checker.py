@@ -1,6 +1,7 @@
 from flask_api_utils.authorization.config import config
 from flask_api_utils.authorization.role_hierachy import RoleHierarchy
 from flask_api_utils.authorization.voter import GRANTED, DENIED
+from flask_api_utils.authorization.voter.internal_client_voter import InternalClientVoter
 from flask_api_utils.authorization.voter.skutrak_role_hierachy_voter import SkutrakRoleHierarchyVoter
 
 """
@@ -151,6 +152,8 @@ class AuthorizationChecker:
     def init_voters(self, app):
         # TODO: Allow loading custom voters
         role_hierarchy = RoleHierarchy(app.config['AUTHORISATION_ROLE_HIERARCHY'])
+
+        self.access_decision_manager.voters.append(InternalClientVoter())
         self.access_decision_manager.voters.append(
             SkutrakRoleHierarchyVoter(role_hierarchy, app.config['AUTH0_ORGANISATIONS_CLAIM_NAME']))
 
