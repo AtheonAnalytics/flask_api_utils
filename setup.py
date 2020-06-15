@@ -14,7 +14,7 @@ requirements = [
 
 setuptools.setup(
     name='flask-api-utils',
-    version='0.3',
+    version='1.2.0',
     author="Tuan Nguyen",
     author_email="tuan.nguyen@groovetechnology.com",
     install_requires=requirements,
