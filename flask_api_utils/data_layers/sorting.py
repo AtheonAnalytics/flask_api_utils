@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from flask import request
+from flask_api_utils.constants import ORDERING_PARAM, ORDER_PATTERN
+from sqlalchemy import cast, String
 from sqlalchemy_filters.models import get_model_from_spec, Field, get_default_model, auto_join
 from sqlalchemy_filters.sorting import Sort as BaseSort
-
-from flask_api_utils.constants import ORDERING_PARAM, ORDER_PATTERN
 
 SORT_ASCENDING = 'asc'
 SORT_DESCENDING = 'desc'
@@ -76,9 +76,9 @@ class Sort(BaseSort):
             sqlalchemy_field = field.get_sqlalchemy_field()
 
             if direction == SORT_ASCENDING:
-                sort_fnc = sqlalchemy_field[inner_field].astext.asc
+                sort_fnc = cast(sqlalchemy_field[inner_field], String).asc
             elif direction == SORT_DESCENDING:
-                sort_fnc = sqlalchemy_field[inner_field].astext.desc
+                sort_fnc = cast(sqlalchemy_field[inner_field], String).desc
         else:
             field = Field(model, field_name)
             sqlalchemy_field = field.get_sqlalchemy_field()
