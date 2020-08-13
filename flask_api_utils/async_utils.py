@@ -1,6 +1,8 @@
 import asyncio
 from functools import reduce
 
+from deepmerge import always_merger
+
 
 async def fetch_all_pages_per_url(client, method_string, **kwargs):
     func = getattr(client, method_string)
@@ -12,7 +14,7 @@ async def fetch_all_pages_per_url(client, method_string, **kwargs):
     first = await func(**params)
     result = await asyncio.gather(
         *[
-            func(**{**params, **{"params": {"page": page}}})
+            func(**always_merger.merge(params, {"params": {"page": page}}))
             for page in range(2, first["pages"] + 1)
         ]
     )

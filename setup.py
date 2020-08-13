@@ -9,6 +9,7 @@ requirements = [
     'sqlalchemy-filters',
     'werkzeug',
     'sqlalchemy',
+    'deepmerge',
     'flask-jwt-extended[asymmetric_crypto]'
 ]
 
