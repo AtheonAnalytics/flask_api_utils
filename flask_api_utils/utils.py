@@ -49,7 +49,7 @@ def is_staff(data, claim_name='https://api.skutrak.com/organisations'):
         sub = data.get('sub')
         if '@clients' in sub:
             return True
-        
+
         organisations = data.get(claim_name, {})
     else:
         organisations = data
