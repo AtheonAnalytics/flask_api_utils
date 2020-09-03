@@ -44,7 +44,16 @@ def has_staff_perm(organisations, perm):
     return False
 
 
-def is_staff(organisations):
+def is_staff(data, claim_name='https://api.skutrak.com/organisations'):
+    if data.get('sub'):
+        sub = data.get('sub')
+        if '@clients' in sub:
+            return True
+        
+        organisations = data.get(claim_name, {})
+    else:
+        organisations = data
+
     for host_name, organisation in organisations.items():
         if 'roles' in organisation:
             for role in organisation['roles'].get('global', []):
