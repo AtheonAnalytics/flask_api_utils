@@ -1,5 +1,5 @@
 import flask
-from flask_restplus._http import HTTPStatus
+from flask_restx._http import HTTPStatus
 from werkzeug.exceptions import HTTPException
 
 

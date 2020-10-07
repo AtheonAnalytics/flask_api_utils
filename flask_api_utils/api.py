@@ -1,4 +1,4 @@
-from flask_restplus import Api as BaseApi
+from flask_restx import Api as BaseApi
 
 
 class Api(BaseApi):

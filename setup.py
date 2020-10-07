@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 requirements = [
     'Flask',
-    'flask-restplus',
+    'flask-restx',
     'sqlalchemy-filters',
     'werkzeug',
     'sqlalchemy',
@@ -15,7 +15,7 @@ requirements = [
 
 setuptools.setup(
     name='flask-api-utils',
-    version='1.3.2',
+    version='1.4.0',
     author="Tuan Nguyen",
     author_email="tuan.nguyen@groovetechnology.com",
     install_requires=requirements,
